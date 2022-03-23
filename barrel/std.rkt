@@ -24,8 +24,9 @@
 (define $ pop-stack!)
 (define (% stack) (display (newline (~v stack))))
 (define (! stack) (display (newline (~v (length stack)))))
-(define (/) (set! stack `(())))
+(define (/) (set! stack empty))
 (define λ null)
+(define (~) (push-stack! null))
 (define (roll) (set! stack (reverse stack)))
 (define (:) (push-stack! (first stack)))
 (define (+!)
@@ -37,7 +38,7 @@
   (match arg
     [(? number? arg) (push-stack! arg)]
     [(? string? arg) (display (newline arg))]
-    [(or (== $) (== +!) (== /) (== *!) (== roll) (== :))
+    [(or (== $) (== +!) (== /) (== *!) (== roll) (== :) (== ~))
      (arg)]
     [(or (== %) (== !) (== ^))
      (arg stack)]
@@ -48,6 +49,6 @@
      (raise "revenge of the lambda" #t)]))
 (provide handle)
 
-(provide + * ^ $ % ! +! λ / roll : *!)
+(provide + * ^ $ % ! +! λ / roll : *! ~)
 
 (provide stack)

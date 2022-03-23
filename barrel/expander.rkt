@@ -6,4 +6,4 @@
   #'(#%module-begin
      HANDLE-EXPR ...
      (display (first stack))))
-(provide (rename-out [barrel-module-begin #%module-begin]))
+(provide (rename-out [barrel-module-begin #%module-begin]) handle + * ^ $ % ! +! λ / roll : *! ~)

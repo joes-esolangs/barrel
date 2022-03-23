@@ -6,3 +6,5 @@
 ; outputs:
 ; hello world
 ; ()
+
+; Now you can continue on your journey!

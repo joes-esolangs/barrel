@@ -1,7 +1,7 @@
 # barrel
  RPN but better, or worse. Who knows?
 
-# Examples
+# examples
 
 Here is hello world:
 
@@ -17,7 +17,7 @@ Here is hello world:
 ; ()
 ```
 
-# Use
+# use
 
 You need to have `racket` and `raco` installed on your system, also preferably `DrRacket`.
 
@@ -42,7 +42,7 @@ $ raco pkg install
 ```
 4. There you go, now you have `barrel` installed!
 
-# Getting Started
+# getting started
 
 3. Create a file called `helloworld.brl` (`.brl` is the file extension for barrel code).
 4. In the file, add `#lang barrel` to the top, and then paste this code below:

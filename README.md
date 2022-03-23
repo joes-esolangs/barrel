@@ -45,7 +45,7 @@ $ raco pkg install
 # Getting Started
 
 3. Create a file called `helloworld.brl` (`.brl` is the file extension for barrel code).
-4. 3. In the file, add `#lang barrel` to the top, and then paste this code below:
+4. In the file, add `#lang barrel` to the top, and then paste this code below:
 ```racket
 "hello world"
 ~

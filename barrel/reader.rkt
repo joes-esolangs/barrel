@@ -1,6 +1,7 @@
 #lang br/quicklang
 
 (require "std.rkt")
+(require "expander.rkt")
 
 (require racket/string)
 
@@ -14,5 +15,3 @@
                           ,@src-datums))
   (datum->syntax #f module-datum))
 (provide read-syntax)
-
-(provide + * ^ $ % ! +! λ / roll : *! handle)

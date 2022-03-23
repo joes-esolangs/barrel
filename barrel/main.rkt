@@ -2,4 +2,5 @@
 
 (module reader br
   (require "reader.rkt")
-  (provide read-syntax))
+  (require "std.rkt")
+  (provide read-syntax ))

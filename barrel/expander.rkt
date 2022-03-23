@@ -1,6 +1,5 @@
 #lang br/quicklang
 
-(require "reader.rkt")
 (require "std.rkt")
 
 (define-macro (barrel-module-begin HANDLE-EXPR ...) 

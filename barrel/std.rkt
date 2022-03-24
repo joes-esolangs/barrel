@@ -1,6 +1,5 @@
 #lang br/quicklang
 (require racket/block)
-(require racket/string)
 
 (define (newline str) (string-append str "\n"))
 

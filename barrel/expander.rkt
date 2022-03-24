@@ -2,10 +2,9 @@
 
 (require "std.rkt")
 
-(define-macro (barrel-module-begin HANDLE-EXPR ...) 
+(define-macro (barrel-module-begin HANDLE-ARGS-EXPR) 
   #'(#%module-begin
-     HANDLE-EXPR ...
-     (display (first stack))))
+     (display (first HANDLE-ARGS-EXPR))))
 (provide (rename-out [barrel-module-begin #%module-begin]))
 
 (provide (all-from-out "std.rkt"))

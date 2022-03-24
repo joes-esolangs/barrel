@@ -2,8 +2,10 @@
 
 ; this is hello world in barrel
 "hello world"
-; pushes () onto the stack
-~
-; outputs:
-; hello world
-; ()
+1
+%
+roll
+/
+1
+3
+*

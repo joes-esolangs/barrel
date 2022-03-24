@@ -21,16 +21,16 @@ Here is hello world:
 
 You need to have `racket` and `raco` installed on your system, also preferably `DrRacket`.
 
+DrRacket:
+1. Open DrRacket, and under `File`, click `Install Package`.
+2. A text window will pop up. Type in `barrel` and then press `Install`. 
+3. There you go, now you have `barrel` installed!
+
 Terminal + Package Server:
 1. Open your terminal.
 2. Since `barrel` is on the package server, you can just run `raco pkg install barrel`.
 3. Once it finishes, make a file called `helloworld.brl` (`.brl` is the file extension for barrel code).
 4. There you go, now you have `barrel` installed!
-
-DrRacket:
-1. Open DrRacket, and under `File`, click `Install Package`.
-2. A text window will pop up. Type in `barrel` and then press `Install`. 
-3. There you go, now you have `barrel` installed!
 
 Building from Source:
 1. Open your terminal.

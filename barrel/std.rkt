@@ -1,7 +1,8 @@
 #lang br/quicklang
 (require racket/block)
+(require racket/string)
 
-(define (newline str) (string-append str "\n"))
+(define (newline str) (string-append-immutable str "\n"))
 
 (define (+!-helper op acc)
     (if (equal? stack empty)

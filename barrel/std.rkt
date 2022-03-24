@@ -11,16 +11,6 @@
           (define a (first stack))
           (+!-helper op (op a acc) (rest stack)))))
 
-(define stack empty)
-
-(define (pop-stack!)
-  (define arg (first stack))
-  (set! stack (rest stack))
-  arg)
-
-(define (push-stack! arg)
-  (set! stack (cons arg stack)))
-
 ; (define (^ stack) (display (newline (~v (first stack)))))
 (define ($ stack) (first stack))
 (define (% stack) (cons stack stack))
@@ -53,5 +43,3 @@
 (provide handle-args)
 
 (provide + * #| ^ |# $ % ! +! λ / roll : *! ~)
-
-(provide stack)

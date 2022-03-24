@@ -1,10 +1,8 @@
 #lang barrel
 
-; this is hello world in barrel
-"hello world"
+"hi"
 1
 %
-roll
 /
 1
 3

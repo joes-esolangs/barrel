@@ -10,14 +10,12 @@ Here is hello world:
 
 ; this is hello world in barrel
 "hello world"
-; pushes () onto the stack
-~
-; outputs:
-; hello world
-; ()
 ```
+# update
 
-# use
+Run `raco pkg update barrel` in the terminal, or update it using the DrRacket GUI.
+
+# install
 
 You need to have `racket` and `raco` installed on your system, also preferably `DrRacket`.
 

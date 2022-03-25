@@ -1,5 +1,5 @@
 # barrel
- RPN but better, or worse. Who knows?
+A simple stack language for nice coding.
 
 # examples
 

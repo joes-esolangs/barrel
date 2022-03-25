@@ -1,16 +1,25 @@
 #lang br/quicklang
-
-(require "std.rkt")
-(require "expander.rkt")
+(require "parser.rkt")
 
 (require racket/string)
 
 (define (src-line? ln) (not (or (equal? ln "") (string-prefix? ln ";"))))
 
 (define (read-syntax path port)
-  (define src-lines (filter (curry src-line?) (port->lines port)))
-  (define src-datums (format-datums '~a src-lines))
-  (define module-datum `(module barrel-mod barrel/expander
-                          (handle-args ,@src-datums)))
+  (define parse-tree (parse path (tokenize port)))
+  (define module-datum `(module brl-mod barrel/expander
+                          ,parse-tree))
   (datum->syntax #f module-datum))
 (provide read-syntax)
+
+(require brag/support)
+(define (tokenize port)
+  (define (next-token)
+    (define brl-lexer
+      (lexer
+       [(char-set "+*$!%/&:~λ") lexeme]
+       [numeric lexeme]
+       [(:+ alphabetic) (token 'STRING lexeme)]
+       [any-char (next-token)]))
+    (brl-lexer port))
+  next-token)

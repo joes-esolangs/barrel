@@ -48,6 +48,5 @@ $ raco pkg install
 #lang barrel
 
 "hello world"
-~
 ```
 5. Now you can run it by pressing the `Run` button in DrRacket, or by running `racket helloworld.brl` in the terminal. 

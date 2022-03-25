@@ -18,7 +18,7 @@
     (define brl-lexer
       (lexer
        [(char-set "+*$!%/&:~λ") lexeme]
-       [numeric lexeme]
+       [(:+ numeric) (token 'NUMBER (string->number lexeme))]
        [(:+ alphabetic) (token 'STRING lexeme)]
        [any-char (next-token)]))
     (brl-lexer port))

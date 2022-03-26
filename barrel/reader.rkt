@@ -17,9 +17,9 @@
   (define (next-token)
     (define brl-lexer
       (lexer
-       [(char-set "+*$!%/&:~λ") lexeme]
-       [(:+ numeric) (token 'NUMBER (string->number lexeme))]
-       [(:+ alphabetic) (token 'STRING lexeme)]
+       [(:+ numeric) (token 'INT (string->number lexeme))]
+       [(:+ (union alphabetic symbolic punctuation)) (token 'ID lexeme)]
+       [(concatenation "\"" (:+ alphabetic) "\"") (token 'STR (string-trim lexeme "\""))]
        [any-char (next-token)]))
     (brl-lexer port))
   next-token)

@@ -10,8 +10,7 @@ Here is hello world:
 ```racket
 #lang barrel
 
-; this is hello world in barrel
-"hello world"
+"hello world" .
 ```
 # update
 
@@ -49,6 +48,6 @@ $ raco pkg install
 ```racket
 #lang barrel
 
-"hello world"
+"hello world" .
 ```
 5. Now you can run it by pressing the `Run` button in DrRacket, or by running `racket helloworld.brl` in the terminal. 

@@ -23,11 +23,12 @@
 
 (define-macro-cases id
   [(id "$") #'pop]
-  [(id "λ") #'lambda]
   [(id ":") #'dup]
   [(id "+") #'add]
   [(id "*") #'mul]
   [(id ".") #'print]
+  [(id "%") #'swap]
+  [(id "λ") (raise "revenge of the lambda")]
   [_ (raise "unknown id" #t)])
 (provide id)
 
@@ -41,10 +42,15 @@
   (cons (first stack) stack))
 
 (define (add stack)
-  (push (+ (first stack) (second stack)) (drop stack 2)))
+  (cons (+ (first stack) (second stack)) (drop stack 2)))
 
 (define (mul stack)
-  (push (* (first stack) (second stack)) (drop stack 2)))
+  (cons (* (first stack) (second stack)) (drop stack 2)))
 
 (define (print stack)
   (display (first stack)))
+
+(define (swap stack)
+  (define x (first stack))
+  (define y (second stack))
+  (cons y (cons x (drop stack 2))))

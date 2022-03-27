@@ -1,2 +1,2 @@
 #lang barrel
-3 1 + 4 * x
+3 1 "haha brr" $ + : * .

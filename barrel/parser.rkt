@@ -1,6 +1,5 @@
 #lang brag
-brl-program : (int | string | id)+
-brl-expr : int | string | id
-int : ["-"] INT
-string : STR
+brl-program : (const | id)+
+brl-expr : const | id
+const : CONST
 id : ID

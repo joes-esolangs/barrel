@@ -14,12 +14,12 @@
 (define-macro (brl-program ATOMS ...)
   #'(begin
       (define stack empty)
-      (display (first (apply-stack stack (list ATOMS ...))))))
+      (void (apply-stack stack (list ATOMS ...)))))
 (provide brl-program)
 
-(define-macro (int INT)
-  #'((curry push) INT))
-(provide int)
+(define-macro (const CONST)
+  #'((curry push) CONST))
+(provide const)
 
 (define-macro-cases id
   [(id "$") #'pop]
@@ -27,6 +27,7 @@
   [(id ":") #'dup]
   [(id "+") #'add]
   [(id "*") #'mul]
+  [(id ".") #'print]
   [_ (raise "unknown id" #t)])
 (provide id)
 
@@ -44,3 +45,6 @@
 
 (define (mul stack)
   (push (* (first stack) (second stack)) (drop stack 2)))
+
+(define (print stack)
+  (display (first stack)))

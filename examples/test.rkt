@@ -1,2 +1,2 @@
 #lang barrel
-3 2 ^ 4 2 ^ + sqrt
+3 1 + 4 * x

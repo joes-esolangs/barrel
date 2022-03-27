@@ -1,3 +1,5 @@
+<img src="barrel_logo.png" width=150px height=150px>
+
 # barrel
 A simple stack language for nice coding.
 

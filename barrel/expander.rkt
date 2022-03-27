@@ -48,7 +48,7 @@
   (cons (* (first stack) (second stack)) (drop stack 2)))
 
 (define (print stack)
-  (display (first stack)))
+  (writeln (first stack)))
 
 (define (swap stack)
   (define x (first stack))

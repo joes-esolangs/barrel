@@ -26,8 +26,9 @@
   [(id ":") #'dup]
   [(id "+") #'add]
   [(id "*") #'mul]
+  [(id "-") #'sub]
   [(id ".") #'print]
-  [(id "%") #'swap]
+  [(id "~") #'swap]
   [(id "λ") (raise "revenge of the lambda")]
   [_ (raise "unknown id" #t)])
 (provide id)
@@ -46,6 +47,9 @@
 
 (define (mul stack)
   (cons (* (first stack) (second stack)) (drop stack 2)))
+
+(define (sub stack)
+  (cons (- (first stack) (second stack)) (drop stack 2)))
 
 (define (print stack)
   (writeln (first stack)))

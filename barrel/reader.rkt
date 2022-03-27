@@ -3,8 +3,6 @@
 
 (require racket/string)
 
-(define (src-line? ln) (not (or (equal? ln "") (string-prefix? ln ";"))))
-
 (define (read-syntax path port)
   (define parse-tree (parse path (tokenize port)))
   (define module-datum `(module brl-mod barrel/expander

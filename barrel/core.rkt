@@ -7,7 +7,8 @@
   (cons (f (first stack)) (rest stack)))
 
 (define (print stack)
-  (writeln (first stack)))
+  (writeln (first stack))
+  stack)
 (provide print)
 
 (define (push atom stack)
@@ -39,3 +40,7 @@
 (define (neg stack)
   (f-at-top (lambda (x) (- x)) stack))
 (provide neg)
+
+(define (copy stack)
+  (cons (list-ref stack (add1 (first stack))) stack))
+(provide copy)

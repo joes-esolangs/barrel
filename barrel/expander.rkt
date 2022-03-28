@@ -4,7 +4,7 @@
 
 (define-macro (barrel-module-begin PARSE-TREE) 
   #'(#%module-begin
-     PARSE-TREE))
+     'PARSE-TREE))
 (provide (rename-out [barrel-module-begin #%module-begin]))
 (provide #%top-interaction)
 
@@ -31,7 +31,8 @@
   [(id "-*") #'neg]
   [(id ".") #'print]
   [(id "~") #'swap]
-  [(id "λ") (raise "revenge of the lambda")]
-  [_ (raise "unknown id" #t)])
+  [(id ":@") #'copy]
+  [(id "λ") #'(error "revenge of the lambda")]
+  [(id ID) #'(error (format "unknown id: ~a" ID))])
 (provide id)
 

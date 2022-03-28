@@ -1,4 +1,6 @@
 #lang br/quicklang
+(require "core.rkt")
+(provide (all-from-out "core.rkt"))
 
 (define-macro (barrel-module-begin PARSE-TREE) 
   #'(#%module-begin
@@ -7,9 +9,7 @@
 (provide #%top-interaction)
 
 (define (apply-stack stack atoms)
-  (for/fold ([current-stack stack])
-            ([atom (in-list atoms)])
-    (atom current-stack)))
+   (foldl (lambda (f prev) (f prev)) stack atoms))
   
 (define-macro (brl-program ATOMS ...)
   #'(begin
@@ -24,37 +24,14 @@
 (define-macro-cases id
   [(id "$") #'pop]
   [(id ":") #'dup]
-  [(id "+") #'add]
-  [(id "*") #'mul]
-  [(id "-") #'sub]
+  [(id "+") #'((curry math-op) +)]
+  [(id "*") #'((curry math-op) *)]
+  [(id "-") #'((curry math-op) -)]
+  [(id "/") #'((curry math-op) /)]
+  [(id "-*") #'neg]
   [(id ".") #'print]
   [(id "~") #'swap]
   [(id "λ") (raise "revenge of the lambda")]
   [_ (raise "unknown id" #t)])
 (provide id)
 
-(define (push atom stack)
-  (cons atom stack))
-
-(define (pop stack)
-  (rest stack))
-
-(define (dup stack)
-  (cons (first stack) stack))
-
-(define (add stack)
-  (cons (+ (first stack) (second stack)) (drop stack 2)))
-
-(define (mul stack)
-  (cons (* (first stack) (second stack)) (drop stack 2)))
-
-(define (sub stack)
-  (cons (- (first stack) (second stack)) (drop stack 2)))
-
-(define (print stack)
-  (writeln (first stack)))
-
-(define (swap stack)
-  (define x (first stack))
-  (define y (second stack))
-  (cons y (cons x (drop stack 2))))

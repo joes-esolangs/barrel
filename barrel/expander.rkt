@@ -1,6 +1,9 @@
 #lang br/quicklang
+(require racket/dict)
 (require "core.rkt")
 (provide (all-from-out "core.rkt"))
+
+(define definitions '())
 
 (define-macro (barrel-module-begin PARSE-TREE) 
   #'(#%module-begin
@@ -10,12 +13,14 @@
 
 (define (apply-stack stack atoms)
    (foldl (lambda (f prev) (f prev)) stack atoms))
-  
-(define-macro (brl-program ATOMS ...)
+
+(define-macro (main ATOMS ...)
   #'(begin
       (define stack empty)
       (void (apply-stack stack (list ATOMS ...)))))
-(provide brl-program)
+
+(define-macro (word ATOMS ...)
+  #'(dict-set! definitions (first (list ATOMS ...)) #'(rest (list ATOMS ...))))
 
 (define-macro (const CONST)
   #'((curry push) CONST))
@@ -33,6 +38,10 @@
   [(id "~") #'swap]
   [(id ":@") #'copy]
   [(id "λ") #'(error "revenge of the lambda")]
-  [(id ID) #'(error (format "unknown id: ~a" ID))])
+  [(id ID) #'(with-handlers ([exn:fail?
+                              (lambda (e) (begin
+                                            (displayln (format "unknown id: ~a" ID))
+                                            (exit)))])
+               (dict-ref definitions ID))])
 (provide id)
 

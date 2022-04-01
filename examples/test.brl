@@ -1,3 +1,3 @@
 #lang barrel
-; this should print 16                                                                 
-3 1 "barrel" $ + : * . ; does it?
+
+main :: 3 1 "barrel" $ + : * . ; does it?

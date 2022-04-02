@@ -8,7 +8,7 @@
 
 (define (print stack)
   (writeln (first stack))
-  stack)
+  (rest stack))
 (provide print)
 
 (define (push atom stack)

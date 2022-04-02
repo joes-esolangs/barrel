@@ -1,6 +1,6 @@
 #lang brag
-;brl-program : word+
-word : NAME (const | id)+
+words : word+ main
 main : MAIN (const | id)+
+word : NAME (const | id)+
 const : CONST
 id : ID

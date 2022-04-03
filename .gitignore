@@ -41,3 +41,4 @@ TAGS
 *.css
 *.js
 *.html
+doc/*

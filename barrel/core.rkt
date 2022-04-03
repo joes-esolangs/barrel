@@ -7,9 +7,14 @@
   (cons (f (first stack)) (rest stack)))
 
 (define (print stack)
-  (writeln (first stack))
+  (write (first stack))
   (rest stack))
 (provide print)
+
+(define (println stack)
+  (writeln (first stack))
+  (rest stack))
+(provide println)
 
 (define (push atom stack)
   (cons atom stack))

@@ -42,6 +42,7 @@
   [(id "/") #'((curry math-op) /)]
   [(id "-*") #'neg]
   [(id ".") #'print]
+  [(id ".\\") #'println]
   [(id "~") #'swap]
   [(id ":@") #'copy]
   [(id "λ") #'(error "revenge of the lambda")]

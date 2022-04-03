@@ -9,4 +9,4 @@
 
 (define module-suffixes '(#".brl"))
 
-(define scribblings (list "scribblings\barrel.rkt"))
+(define scribblings '(("scribblings/barrel.scrbl" (multi-page))))

@@ -40,11 +40,13 @@
   [(id "*") #'((curry math-op) *)]
   [(id "-") #'((curry math-op) -)]
   [(id "/") #'((curry math-op) /)]
-  [(id "-*") #'neg]
+  [(id "!") #'neg]
   [(id ".") #'print]
   [(id ".\\") #'println]
   [(id "~") #'swap]
   [(id ":@") #'copy]
+  [(id "+s") #'concat]
+  [(id "<>") #'n-rev]
   [(id "λ") #'(error "revenge of the lambda")]
   [(id ID) #'(with-handlers ([exn:fail?
                               (lambda (e) (begin

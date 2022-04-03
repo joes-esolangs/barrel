@@ -7,12 +7,12 @@
   (cons (f (first stack)) (rest stack)))
 
 (define (print stack)
-  (write (first stack))
+  (display (first stack))
   (rest stack))
 (provide print)
 
 (define (println stack)
-  (writeln (first stack))
+  (displayln (first stack))
   (rest stack))
 (provide println)
 
@@ -36,16 +36,24 @@
     [(== /) (bin-op op stack)]))
 (provide math-op)
 
+(define (neg stack)
+  (f-at-top (lambda (x) (- x)) stack))
+(provide neg)
+
 (define (swap stack)
   (define x (first stack))
   (define y (second stack))
   (cons y (cons x (drop stack 2))))
 (provide swap)
 
-(define (neg stack)
-  (f-at-top (lambda (x) (- x)) stack))
-(provide neg)
-
 (define (copy stack)
   (cons (list-ref stack (add1 (first stack))) stack))
 (provide copy)
+
+(define (concat stack)
+  (cons (string-append (second stack) (first stack)) (drop stack 2)))
+(provide concat)
+
+(define (n-rev stack)
+  (append (reverse (take (rest stack) (first stack))) (drop (rest stack) (first stack))))
+(provide n-rev)

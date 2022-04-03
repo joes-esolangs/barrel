@@ -4,8 +4,6 @@
 
 @defmodulelang[barrel]
 
-@section{intro}
-
 This is a stack language that uses reverse polish notation.
 It is written in @racketmodname[br/quicklang], a slightly modified version of racket. I plan to translate to @racketmodname[racket/base] in the future.
 
@@ -26,3 +24,16 @@ This results in:
 @verbatim{
 hello world
 }
+
+@section{operators}
+
+Here are all the current operators in barrel:
+
+@tabular[#:sep ":    "
+         (list (list "$" "pops the first item off the stack")
+               (list ":" "duplicates the first item on the stack")
+               (list "+" "sums the top two items on the stack")
+               (list "*" "subtracts the top two items on the stack")
+               (list "-" "multiples the top two items on the stack")
+               (list "/" "divides the top two items on the stack")
+               (

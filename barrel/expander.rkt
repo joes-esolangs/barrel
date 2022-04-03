@@ -26,7 +26,7 @@
 (provide main)
 
 (define-macro (word ATOMS ...)
-  #'(dict-set! definitions (first (list ATOMS ...)) #'(rest (list ATOMS ...))))
+  #'(dict-set! definitions (first (list ATOMS ...)) (rest (list ATOMS ...))))
 (provide word)
 
 (define-macro (const CONST)

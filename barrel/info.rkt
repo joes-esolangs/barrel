@@ -8,3 +8,5 @@
     "brag-lib"))
 
 (define module-suffixes '(#".brl"))
+
+(define scribblings (list "scribblings\barrel.rkt"))

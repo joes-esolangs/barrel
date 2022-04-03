@@ -1,5 +1,5 @@
 #lang brag
-words : word+ main
+words : word* main
 main : MAIN (const | id)+
 word : NAME (const | id)+
 const : CONST

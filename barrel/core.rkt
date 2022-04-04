@@ -1,7 +1,8 @@
 #lang br/quicklang
+(require brag/support)
 
 (define (bin-op op stack)
-  (cons (op (first stack) (second stack)) (drop stack 2)))
+  (cons (op (second stack) (first stack)) (drop stack 2)))
 
 (define (f-at-top f stack)
   (cons (f (first stack)) (rest stack)))
@@ -47,7 +48,7 @@
 (provide swap)
 
 (define (copy stack)
-  (cons (list-ref stack (add1 (first stack))) stack))
+  (cons (list-ref stack (add1 (first stack))) (rest stack)))
 (provide copy)
 
 (define (concat stack)
@@ -57,3 +58,10 @@
 (define (n-rev stack)
   (append (reverse (take (rest stack) (first stack))) (drop (rest stack) (first stack))))
 (provide n-rev)
+
+(define (print-stack stack)
+  (displayln (string-append
+              (format "{~a} " (length stack))
+              (trim-ends "(" (~a (reverse stack)) ")")))
+  stack)
+(provide print-stack)

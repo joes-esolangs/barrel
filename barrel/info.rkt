@@ -5,7 +5,8 @@
 (define deps
   '("base"
     "beautiful-racket"
-    "brag-lib"))
+    "brag-lib"
+    "threading-lib"))
 
 (define module-suffixes '(#".brl"))
 

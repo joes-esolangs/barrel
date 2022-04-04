@@ -29,11 +29,18 @@ hello world
 
 Here are all the current operators in barrel:
 
-@tabular[#:sep ":    "
-         (list (list "$" "pops the first item off the stack")
-               (list ":" "duplicates the first item on the stack")
-               (list "+" "sums the top two items on the stack")
-               (list "*" "subtracts the top two items on the stack")
-               (list "-" "multiples the top two items on the stack")
-               (list "/" "divides the top two items on the stack")
-               (
+@tabular[#:sep @hspace[3]
+         (list (list @tt["$"] @italic["pops the first item off the stack"])
+               (list @tt[":"] @italic["duplicates the first item on the stack"])
+               (list @tt["+"] @italic["sums the top two items on the stack"])
+               (list @tt["*"] @italic["subtracts the top two items on the stack"])
+               (list @tt["-"] @italic["multiples the top two items on the stack"])
+               (list @tt["/"] @italic["divides the top two items on the stack"])
+               (list @tt["!"] @italic["negates the first item"])
+               (list @tt["."] @italic["prints the first item without a newline and pops it"])
+               (list @tt[".\\"] @italic["prints the first item with a newline and pops it"])
+               (list @tt["~"] @italic["swaps the top two items on the stack"])
+               (list @tt[":@"] @italic["copies an item from a given index to the top of the stack"])
+               (list @tt["+s"] @italic["concats the top two items on the stack (meant for strings)"])
+               (list @tt["<>"] @italic["reverses the top n elements on the stack"])
+               (list @tt["λ"] @bold["undocumented"]))]

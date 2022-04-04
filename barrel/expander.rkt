@@ -42,16 +42,19 @@
   [(id "/") #'((curry math-op) /)]
   [(id "!") #'neg]
   [(id ".") #'print]
-  [(id ".\\") #'println]
+  [(id ".n") #'println]
+  [(id ".!") #'print-stack]
   [(id "~") #'swap]
   [(id ":@") #'copy]
   [(id "+s") #'concat]
   [(id "<>") #'n-rev]
-  [(id "λ") #'(error "revenge of the lambda")]
+  [(id "()") #'((curry push) null)]
+  [(id "λ") #'(begin
+                (displayln "revenge of the lambda")
+                (exit))]
   [(id ID) #'(with-handlers ([exn:fail?
                               (lambda (e) (begin
                                             (displayln (format "unknown id: ~a" ID))
                                             (exit)))])
                (dict-ref definitions ID))])
 (provide id)
-

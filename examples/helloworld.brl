@@ -1,9 +1,3 @@
 #lang barrel
 
-"hi"
-1
-%
-/
-1
-3
-*
+main :: "hello world" .

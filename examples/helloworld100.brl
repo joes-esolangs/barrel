@@ -1,0 +1,3 @@
+#lang barrel
+
+main :: "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . "hello world" . 

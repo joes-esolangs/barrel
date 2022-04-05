@@ -1,8 +1,10 @@
 #lang br/quicklang
 (require "parser.rkt")
+(require "expander.rkt")
 (require threading)
-
 (require racket/string)
+(require racket/dict)
+(require racket/block)
 
 (define (read-syntax path port)
   (define parse-tree (parse path (make-tokenizer port)))
@@ -17,11 +19,14 @@
     (define brl-lexer
       (lexer
        [(concatenation "main" (:* whitespace) "::") (token 'MAIN)]
-       [(concatenation (:+ (union alphabetic symbolic punctuation)) (:* whitespace) "::") (token 'NAME
-                                                                                                 (~>
+       [(concatenation (:+ (union alphabetic symbolic punctuation)) (:* whitespace) "::") (block
+                                                                                           (define name
+                                                                                             (~>
                                                                                                   lexeme
                                                                                                   (string-trim "::")
-                                                                                                  (string-trim)))]
+                                                                                                  (string-trim)))
+                                                                                           (dict-set! definitions name empty)
+                                                                                           (token 'NAME name))]
        [(union (concatenation (union "-" "") (concatenation (:+ numeric) (union (concatenation "." (:+ numeric)) "")))) (token 'CONST (string->number lexeme))]
        [(concatenation "\"" (:+ (union alphabetic symbolic whitespace)) "\"") (token 'CONST (string-trim lexeme "\""))]
        [(:+ (union alphabetic symbolic punctuation numeric)) (token 'ID lexeme)]

@@ -1,6 +1,5 @@
 #lang br/quicklang
 (require "parser.rkt")
-;(require "expander.rkt")
 (require threading)
 (require racket/string)
 (require racket/dict)
@@ -25,7 +24,6 @@
                                                                                                   lexeme
                                                                                                   (string-trim "::")
                                                                                                   (string-trim)))
-                                                                                           ;(dict-set! definitions name empty)
                                                                                            (token 'NAME name))]
        [(union (concatenation (union "-" "") (concatenation (:+ numeric) (union (concatenation "." (:+ numeric)) "")))) (token 'CONST (string->number lexeme))]
        [(concatenation "\"" (:+ (union alphabetic symbolic whitespace)) "\"") (token 'CONST (string-trim lexeme "\""))]

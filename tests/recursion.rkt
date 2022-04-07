@@ -1,4 +1,5 @@
 #lang barrel
 
-forever :: "recursing" .n 
-main :: forever
+forever :: "recursing" .n forever
+main :: forever 
+

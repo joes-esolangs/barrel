@@ -1,16 +1,14 @@
 #lang br/quicklang
 (require racket/dict)
 (require racket/block)
-(require threading)
 (require "core.rkt")
-(require "util.rkt")
 (provide (all-from-out "core.rkt"))
 
-;(define definitions (make-hash))
-;(provide definitions)
+(provide definitions)
+(define definitions (make-hash))
 
 (define-macro (barrel-module-begin PARSE-TREE) 
-  #'(#%module-begin
+  #'(#%module-begin 
      PARSE-TREE))
 (provide (rename-out [barrel-module-begin #%module-begin]))
 (provide #%top-interaction)
@@ -19,10 +17,10 @@
    (foldl (lambda (f prev) (f prev)) stack words))
 
 (define (apply-word words stack)
-  (apply-stack stack words))
+  (apply-stack stack (words)))
 
 (define-macro (words WORDS ...)
-  #'(last (list WORDS ...)))
+  #'(last (list WORDS ...))) 
 (provide words)
 
 (define-macro (main WORDS ...)
@@ -31,9 +29,8 @@
       (void (apply-stack stack (rest (list WORDS ...))))))
 (provide main)
 
-(define-macro (word NAME WORDS ...)
-  ;#'(dict-set! definitions (first (list WORDS ...)) (rest (list WORDS ...)))
-  #'(string-define NAME (list (WORDS ...))))
+(define-macro (word WORDS ...)
+  #'(dict-set! definitions (first (list WORDS ...)) (rest (list WORDS ...))))
 (provide word)
 
 (define-macro (const CONST)
@@ -43,7 +40,7 @@
 (define-macro-cases id
   [(id "$") #'pop]
   [(id ":") #'dup]
-  [(id "+") #'((curry math-op) +)]
+  [(id "+") #'plus]
   [(id "*") #'((curry math-op) *)]
   [(id "-") #'((curry math-op) -)]
   [(id "/") #'((curry math-op) /)]
@@ -59,10 +56,10 @@
   [(id "λ") #'(begin
                 (displayln "revenge of the lambda")
                 (error 'lambda))]
-  [(id ID) #'(with-handlers ([exn:fail?
-                              (lambda (e) (begin
-                                            (displayln (format "unknown id: ~a" ID))
-                                            (error 'unknown-id)))])
-                ;((curry apply-word) (dict-ref definitions ID)))])
-               ((curry apply-word) ID))])
+  [(id ID) #'((curry apply-word) (lambda ()
+                                   (with-handlers ([exn:fail?
+                                                    (lambda (e) (begin
+                                                                  (displayln (format "unknown id: ~a" ID))
+                                                                  (error 'unknown-id)))])
+                (dict-ref definitions ID))))])
 (provide id)

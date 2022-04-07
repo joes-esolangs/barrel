@@ -65,3 +65,13 @@
               (trim-ends "(" (~a (reverse stack)) ")")))
   stack)
 (provide print-stack)
+
+(define (plus stack)
+  (define a (first stack))
+  (define b (second stack))
+  (define rest (drop stack 2))
+  (cond
+    [(and (number? a) (number? b)) (cons (+ a b) rest)]
+    [(and (string? a) (string? b)) (cons (string-append a b) rest)]
+    [(and (list? a) (list? b)) (cons (append a b) rest)]
+    [else (displayln "error: type mismatch") (error 'type-mismatch)]))

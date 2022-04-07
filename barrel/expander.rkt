@@ -30,7 +30,7 @@
 (provide main)
 
 (define-macro (word WORDS ...)
-  #'(block (dict-set! definitions (first (list WORDS ...)) (rest (list WORDS ...)))))
+  #'(dict-set! definitions (first (list WORDS ...)) (rest (list WORDS ...))))
 (provide word)
 
 (define-macro (const CONST)

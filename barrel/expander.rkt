@@ -1,13 +1,11 @@
 #lang br/quicklang
 (require racket/dict)
 (require racket/block)
-(require threading)
 (require "core.rkt")
-(require "util.rkt")
 (provide (all-from-out "core.rkt"))
 
-;(define definitions (make-hash))
-;(provide definitions)
+(define definitions (make-hash))
+(provide definitions)
 
 (define-macro (barrel-module-begin PARSE-TREE) 
   #'(#%module-begin
@@ -31,9 +29,8 @@
       (void (apply-stack stack (rest (list WORDS ...))))))
 (provide main)
 
-(define-macro (word NAME WORDS ...)
-  ;#'(dict-set! definitions (first (list WORDS ...)) (rest (list WORDS ...)))
-  #'(string-define NAME (list (WORDS ...))))
+(define-macro (word WORDS ...)
+  #'(dict-set! definitions (first (list WORDS ...)) (rest (list WORDS ...))))
 (provide word)
 
 (define-macro (const CONST)
@@ -63,6 +60,5 @@
                               (lambda (e) (begin
                                             (displayln (format "unknown id: ~a" ID))
                                             (error 'unknown-id)))])
-                ;((curry apply-word) (dict-ref definitions ID)))])
-               ((curry apply-word) ID))])
+                ((curry apply-word) (dict-ref definitions ID)))])
 (provide id)

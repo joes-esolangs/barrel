@@ -4,10 +4,10 @@
 (require "core.rkt")
 (provide (all-from-out "core.rkt"))
 
-(define definitions (make-hash))
 (provide definitions)
+(define definitions (make-hash))
 
-(define-macro (barrel-module-begin PARSE-TREE) 
+(define-macro (barrel-module-begin PARSE-TREE)
   #'(#%module-begin
      PARSE-TREE))
 (provide (rename-out [barrel-module-begin #%module-begin]))
@@ -17,7 +17,7 @@
    (foldl (lambda (f prev) (f prev)) stack words))
 
 (define (apply-word words stack)
-  (apply-stack stack words))
+  (apply-stack stack (words)))
 
 (define-macro (words WORDS ...)
   #'(last (list WORDS ...)))
@@ -30,7 +30,7 @@
 (provide main)
 
 (define-macro (word WORDS ...)
-  #'(dict-set! definitions (first (list WORDS ...)) (rest (list WORDS ...))))
+  #'(block (dict-set! definitions (first (list WORDS ...)) (rest (list WORDS ...)))))
 (provide word)
 
 (define-macro (const CONST)
@@ -56,9 +56,9 @@
   [(id "λ") #'(begin
                 (displayln "revenge of the lambda")
                 (error 'lambda))]
-  [(id ID) #'(with-handlers ([exn:fail?
-                              (lambda (e) (begin
-                                            (displayln (format "unknown id: ~a" ID))
-                                            (error 'unknown-id)))])
-                ((curry apply-word) (dict-ref definitions ID)))])
+  [(id ID) #'((curry apply-word) (lambda ()
+											  (with-handlers ([exn:fail?
+																	  (lambda (e) (begin
+																						 (displayln (format "unknown id: ~a" ID))
+																						 (error 'unknown-id)))]) (dict-ref definitions ID))))])
 (provide id)

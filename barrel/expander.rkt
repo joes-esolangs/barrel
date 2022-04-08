@@ -53,6 +53,7 @@
   [(id "+s") #'concat]
   [(id "<>") #'n-rev]
   [(id "()") #'((curry push) null)]
+  [(id ".<") #'read]
   [(id "λ") #'(begin
                 (displayln "revenge of the lambda")
                 (error 'lambda))]

@@ -71,7 +71,13 @@
   (define b (second stack))
   (define rest (drop stack 2))
   (cond
-    [(and (number? a) (number? b)) (cons (+ a b) rest)]
-    [(and (string? a) (string? b)) (cons (string-append a b) rest)]
-    [(and (list? a) (list? b)) (cons (append a b) rest)]
+    [(and (number? a) (number? b)) (cons (+ b a) rest)]
+    [(and (string? a) (string? b)) (cons (string-append b a) rest)]
+    [(and (list? a) (list? b)) (cons (append b a) rest)]
     [else (displayln "error: type mismatch") (error 'type-mismatch)]))
+(provide plus)
+
+(define (read stack)
+  (define input (read-line))
+  (cons input stack))
+(provide read)

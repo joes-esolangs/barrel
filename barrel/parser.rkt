@@ -1,6 +1,6 @@
 #lang brag
-words : word* main
+words : (word | const | id)*
 main : MAIN (const | id)+
-word : NAME (const | id)+
+word : "{" (const | id)+ "}" NAME
 const : CONST
 id : ID

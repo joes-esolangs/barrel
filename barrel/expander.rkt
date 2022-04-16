@@ -1,14 +1,16 @@
 #lang br/quicklang
 (require racket/dict racket/block threading)
-(require "core.rkt")
+(require "core.rkt" "util.rkt")
 (provide (all-from-out "core.rkt"))
 
 (provide definitions)
 (define definitions (make-hash))
 
+(define count 0)
+
 (define-macro (barrel-module-begin PARSE-TREE) 
   #'(#%module-begin
-     PARSE-TREE))
+     'PARSE-TREE))
 (provide (rename-out [barrel-module-begin #%module-begin]))
 (provide #%top-interaction)
 
@@ -19,26 +21,17 @@
   (apply-stack stack (words)))
 
 (define-macro (words WORDS ...)
-;  #'(last (list WORDS ...)))
   #'(block
       (define stack empty)
       (void (apply-stack stack (rest (list WORDS ...))))))
 (provide words)
 
-;(define-macro (main WORDS ...)
-;  #'(block
-;      (define stack empty)
-;      (displayln (~a (apply-stack stack (rest (list WORDS ...)))))
-;      (void (displayln (first (apply-stack stack (rest (list WORDS ...))))))))
-;(provide main)
-
-(define-macro (word WORDS ...)
+(define-macro (word "{" WORDS ... "}")
   #'(block
-      (define name (last (list WORDS ...)))
-      (define code (~> (list WORDS ...)
-                       (drop-right 2)
-                       rest))
-      (dict-set! definitions name code)))
+      (define name (base52-encoder count))
+      (define code (list WORDS ...))
+      (dict-set! definitions name code)
+      ))
 (provide word)
 
 (define-macro (const CONST)

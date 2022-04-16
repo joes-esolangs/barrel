@@ -7,7 +7,8 @@
     "beautiful-racket"
     "brag-lib"
     "threading-lib"
-    "br-parser-tools"))
+    "br-parser-tools"
+    "control"))
 
 (define module-suffixes '(#".brl"))
 

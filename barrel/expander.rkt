@@ -1,6 +1,6 @@
 #lang br/quicklang
 (require racket/dict racket/block threading)
-(require "core.rkt" "util.rkt")
+(require "core.rkt")
 (provide (all-from-out "core.rkt"))
 
 (provide definitions)
@@ -10,7 +10,7 @@
 
 (define-macro (barrel-module-begin PARSE-TREE) 
   #'(#%module-begin
-     'PARSE-TREE))
+     PARSE-TREE))
 (provide (rename-out [barrel-module-begin #%module-begin]))
 (provide #%top-interaction)
 
@@ -31,7 +31,7 @@
       (define name (base52-encoder count))
       (define code (list WORDS ...))
       (dict-set! definitions name code)
-      ))
+      (set! count (+ count 1))))
 (provide word)
 
 (define-macro (const CONST)

@@ -16,7 +16,6 @@
 ;                                                                         (token 'NAME name))]
        [(union (concatenation (union "-" "") (concatenation (:+ numeric) (union (concatenation "." (:+ numeric)) "")))) (token 'CONST (string->number lexeme))]
        [(concatenation "\"" (:+ (union alphabetic symbolic whitespace)) "\"") (token 'CONST (string-trim lexeme "\""))]
-;       [(:+ alphabetic) (token 'ID lexeme)]
        [(union symbolic punctuation alphabetic) (token 'ID lexeme)]
        [any-char (next-token)]))
     (brl-lexer port))

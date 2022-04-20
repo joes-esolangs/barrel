@@ -1,3 +1,7 @@
 #!barrel
 ` this should print 49 
-{:*}7s. 
+{:*}
+{:*}
+7a.
+" ".
+7b.

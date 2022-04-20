@@ -7,13 +7,6 @@
       (lexer
        [(from/to "`" "\n") (next-token)]
        [(char-set "{}[]()") lexeme]
-;       [(concatenation (:+ (union alphabetic "_")) (:* whitespace) ";") (block
-;                                                                         (define name
-;                                                                           (~>
-;                                                                            lexeme
-;                                                                            (string-trim ";")
-;                                                                            (string-trim)))
-;                                                                         (token 'NAME name))]
        [(union (concatenation (union "-" "") (concatenation (:+ numeric) (union (concatenation "." (:+ numeric)) "")))) (token 'CONST (string->number lexeme))]
        [(from/to "\"" "\"") (token 'CONST (string-trim lexeme "\""))]
        [(union symbolic punctuation alphabetic) (token 'ID lexeme)]

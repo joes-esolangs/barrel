@@ -3,10 +3,10 @@
 (require "core.rkt" "util.rkt")
 (provide (all-from-out "core.rkt"))
 
-;(define definitions (make-hash))
-(define definitions empty)
+(provide definitions)
+(define definitions (box empty))
 
-(define count 0)
+(define count (box 0))
 
 (define-macro (barrel-module-begin PARSE-TREE) 
   #'(#%module-begin
@@ -20,19 +20,22 @@
 (define (apply-word words stack)
   (apply-stack stack (words)))
 
+;; TODO: add implicit printing
 (define-macro (words WORDS ...)
   #'(block
       (define stack empty)
-      (void (apply-stack stack (list WORDS ...)))))
+      (filter void? (list WORDS ...))
+      (define code (filter (negate void?) (list WORDS ...)))
+      (void (apply-stack stack code))))
 (provide words)
 
 (define-macro (word "{" WORDS ... "}")
   #'(block
       (define code (list WORDS ...))
-      (if (> count 52)
+      (if (> (unbox count) 52)
           (raise "reached max definition limit")
-          (set! definitions (cons code definitions)))
-      (set! count (+ count 1))))
+          (set-box! definitions (cons code (unbox definitions))))
+      (set-box! count (+ (unbox count) 1))))
 (provide word)
 
 (define-macro (const CONST)
@@ -61,7 +64,7 @@
                 (error 'lambda))]
   [(id ID) #'((curry apply-word) (lambda ()
                                    (define decoded (b52-decode ID))
-                                   (if (<= decoded 52)
-                                       (list-ref definitions (- 1 decoded))
+                                   (if (<= decoded (length (unbox definitions)))
+                                       (list-ref (unbox definitions) (- decoded 1))
                                        (raise (format "word ~a not availible" ID)))))])
 (provide id)

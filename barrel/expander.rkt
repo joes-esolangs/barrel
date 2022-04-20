@@ -1,10 +1,10 @@
 #lang br/quicklang
 (require racket/dict racket/block threading)
-(require "core.rkt")
+(require "core.rkt" "util.rkt")
 (provide (all-from-out "core.rkt"))
 
-(provide definitions)
-(define definitions (make-hash))
+;(define definitions (make-hash))
+(define definitions empty)
 
 (define count 0)
 
@@ -23,14 +23,15 @@
 (define-macro (words WORDS ...)
   #'(block
       (define stack empty)
-      (void (apply-stack stack (rest (list WORDS ...))))))
+      (void (apply-stack stack (list WORDS ...)))))
 (provide words)
 
 (define-macro (word "{" WORDS ... "}")
   #'(block
-      (define name (base52-encoder count))
       (define code (list WORDS ...))
-      (dict-set! definitions name code)
+      (if (> count 52)
+          (raise "reached max definition limit")
+          (set! definitions (cons code definitions)))
       (set! count (+ count 1))))
 (provide word)
 
@@ -59,9 +60,8 @@
                 (displayln "revenge of the lambda")
                 (error 'lambda))]
   [(id ID) #'((curry apply-word) (lambda ()
-                                   (with-handlers ([exn:fail?
-                                                    (lambda (e) (begin
-                                                                  (displayln (format "unknown id: ~a" ID))
-                                                                  (error 'unknown-id)))])
-                (dict-ref definitions ID))))])
+                                   (define decoded (b52-decode ID))
+                                   (if (<= decoded 52)
+                                       (list-ref definitions (- 1 decoded))
+                                       (raise (format "word ~a not availible" ID)))))])
 (provide id)

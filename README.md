@@ -1,5 +1,7 @@
 <img src="barrel_logo.png" width=150px height=150px>
 
+# README IS OUTDATED
+
 # barrel
 A stack language heavily inspired by Factor, K and CJam.
 

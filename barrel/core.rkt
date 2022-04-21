@@ -1,6 +1,17 @@
 #lang br/quicklang
 (require brag/support)
 
+(define-struct quotation (words))
+(provide make-quotation quotation? quotation-words)
+
+(define (apply-stack stack words)
+   (foldl (lambda (f prev) (f prev)) stack words))
+(provide apply-stack)
+
+(define (apply-word words stack)
+  (apply-stack stack (words)))
+(provide apply-word)
+
 (define (bin-op op stack)
   (cons (op (second stack) (first stack)) (drop stack 2)))
 
@@ -37,9 +48,13 @@
     [(== /) (bin-op op stack)]))
 (provide math-op)
 
-(define (neg stack)
-  (f-at-top (lambda (x) (- x)) stack))
-(provide neg)
+;; TODO: Fix calling quotations
+(define (exclamation stack)
+  (cond ;; (apply-word (lambda () (quotation-words (first stack))) stack)
+    [(quotation? (first stack)) (apply-word (lambda () (quotation-words (first stack))) (rest stack))]
+    [(number? (first stack)) (f-at-top - stack)]
+    [(string? (first stack)) (f-at-top string->number stack)]))
+(provide exclamation)
 
 (define (swap stack)
   (define x (first stack))
@@ -66,6 +81,7 @@
   stack)
 (provide print-stack)
 
+;; instead of append two quotations, maybe sum one of them
 (define (plus stack)
   (define a (first stack))
   (define b (second stack))
@@ -73,7 +89,6 @@
   (cond
     [(and (number? a) (number? b)) (cons (+ b a) rest)]
     [(and (string? a) (string? b)) (cons (string-append b a) rest)]
-    [(and (list? a) (list? b)) (cons (append b a) rest)]
     [else (displayln "error: type mismatch") (error 'type-mismatch)]))
 (provide plus)
 

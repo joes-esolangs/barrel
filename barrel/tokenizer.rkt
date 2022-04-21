@@ -6,9 +6,10 @@
     (define brl-lexer
       (lexer
        [(from/to "`" "\n") (next-token)]
-       [(char-set "{}[]()") lexeme]
+       [(char-set "{}[]") lexeme]
        [(union (concatenation (union "-" "") (concatenation (:+ numeric) (union (concatenation "." (:+ numeric)) "")))) (token 'CONST (string->number lexeme))]
        [(from/to "\"" "\"") (token 'CONST (string-trim lexeme "\""))]
+       [".\n" (token 'ID lexeme)]
        [(union symbolic punctuation alphabetic) (token 'ID lexeme)]
        [any-char (next-token)]))
     (brl-lexer port))

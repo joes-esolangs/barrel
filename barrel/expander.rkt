@@ -1,5 +1,5 @@
 #lang br/quicklang
-(require racket/dict racket/block threading)
+(require racket/dict racket/block)
 (require "core.rkt" "util.rkt")
 (provide (all-from-out "core.rkt"))
 
@@ -13,12 +13,6 @@
      PARSE-TREE))
 (provide (rename-out [barrel-module-begin #%module-begin]))
 (provide #%top-interaction)
-
-(define (apply-stack stack words)
-   (foldl (lambda (f prev) (f prev)) stack words))
-
-(define (apply-word words stack)
-  (apply-stack stack (words)))
 
 ;; TODO: add implicit printing
 (define-macro (words WORDS ...)
@@ -34,9 +28,13 @@
       (define code (list WORDS ...))
       (if (> (unbox count) 52)
           (raise "reached max definition limit")
-          (set-box! definitions (cons code (unbox definitions))))
+          (set-box! definitions (append (unbox definitions) (list code))))
       (set-box! count (+ (unbox count) 1))))
 (provide word)
+
+(define-macro (quote~ "[" WORDS ... "]")
+  #'((curry push) (make-quotation (list WORDS ...))))
+(provide quote~)
 
 (define-macro (const CONST)
   #'((curry push) CONST))
@@ -49,16 +47,14 @@
   [(id "*") #'((curry math-op) *)]
   [(id "-") #'((curry math-op) -)]
   [(id "/") #'((curry math-op) /)]
-  [(id "!") #'neg]
+  [(id "!") #'exclamation]
   [(id ".") #'print]
-  [(id ".n") #'println]
+  [(id ".\n") #'println]
   [(id ".!") #'print-stack]
   [(id "~") #'swap]
   [(id ":@") #'copy]
-  [(id "+s") #'concat]
-  [(id "<>") #'n-rev]
   [(id "()") #'((curry push) null)]
-  [(id ".<") #'read]
+  [(id ",") #'read]
   [(id "λ") #'(begin
                 (displayln "revenge of the lambda")
                 (error 'lambda))]

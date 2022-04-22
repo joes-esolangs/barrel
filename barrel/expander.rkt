@@ -20,7 +20,7 @@
       (define stack empty)
       (filter void? (list WORDS ...))
       (define code (filter (negate void?) (list WORDS ...)))
-      (void (apply-stack stack code))))
+      (void (print-stack-nice (apply-stack stack code)))))
 (provide words)
 
 (define-macro (word "{" WORDS ... "}")
@@ -48,12 +48,12 @@
   [(id "-") #'((curry math-op) -)]
   [(id "/") #'((curry math-op) /)]
   [(id "!") #'exclamation]
-  [(id ".") #'print]
-  [(id ".\n") #'println]
-  [(id ".!") #'print-stack]
   [(id "~") #'swap]
   [(id ":@") #'copy]
   [(id "()") #'((curry push) null)]
+  [(id ".") #'print]
+  [(id ".\n") #'println]
+  [(id ".  ") #'print-stack]
   [(id ",") #'read]
   [(id "λ") #'(begin
                 (displayln "revenge of the lambda")

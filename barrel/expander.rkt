@@ -52,7 +52,7 @@
   [(id ":@") #'copy]
   [(id "()") #'((curry push) null)]
   [(id ".") #'print]
-  [(id ".\n") #'println]
+  [(id ". ") #'println]
   [(id ".  ") #'print-stack]
   [(id ",") #'read]
   [(id "λ") #'(begin
@@ -62,5 +62,5 @@
                                    (define decoded (b52-decode ID))
                                    (if (<= decoded (length (unbox definitions)))
                                        (list-ref (unbox definitions) (- decoded 1))
-                                       (raise (format "word ~a not availible" ID)))))])
+                                       (raise (format "word \"~a\" not availible" ID)))))])
 (provide id)

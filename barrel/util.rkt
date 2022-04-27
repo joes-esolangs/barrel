@@ -9,5 +9,9 @@
           [b52-decode (string? . -> . integer?)]))
 
 (define (print-stack-nice stack)
-  (for-each (lambda (a) (displayln a)) (filter (negate void?) stack)))
+  (for-each (lambda (a) (displayln a)) (filter (or (negate void?) (negate procedure?)) stack)))
 (provide print-stack-nice)
+
+(define (lfy e)
+  (lambda () e))
+(provide lfy)

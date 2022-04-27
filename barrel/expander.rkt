@@ -41,26 +41,35 @@
 (provide const)
 
 (define-macro-cases id
+  ;; Stack 
   [(id "$") #'pop]
   [(id ":") #'dup]
+  [(id "~") #'swap]
+  [(id "@") #'copy]
+  [(id "#") #'rotate]
+  ;; Combinators
+  [(id "η") #'eval]
+  [(id "χ") #'cat]
+  [(id "Δ") #'dip]
+  ;; IO
+  [(id ".") #'print]
+  [(id "·") #'println]
+  [(id "§") #'print-stack]
+  [(id ",") #'read]
+  ;; Math
   [(id "+") #'plus]
   [(id "*") #'((curry math-op) *)]
   [(id "-") #'((curry math-op) -)]
   [(id "/") #'((curry math-op) /)]
-  [(id "!") #'exclamation]
-  [(id "~") #'swap]
-  [(id ":@") #'copy]
-  [(id "()") #'((curry push) null)]
-  [(id ".") #'print]
-  [(id ". ") #'println]
-  [(id ".  ") #'print-stack]
-  [(id ",") #'read]
+  ;; List 
+  [(id "↦") #'map]
+  ;; MISC
   [(id "λ") #'(begin
                 (displayln "revenge of the lambda")
                 (error 'lambda))]
   [(id ID) #'((curry apply-word) (lambda ()
                                    (define decoded (b52-decode ID))
-                                   (if (<= decoded (length (unbox definitions)))
+                                   (if (or (<= decoded (length (unbox definitions))) (not (< decoded 0)))
                                        (list-ref (unbox definitions) (- decoded 1))
                                        (raise (format "word \"~a\" not availible" ID)))))])
 (provide id)

@@ -13,3 +13,5 @@
 (define module-suffixes '(#".brl"))
 
 (define scribblings '(("scribblings/barrel.scrbl" (multi-page))))
+
+(define racket-launcher-names '("barrel" "brl"))

@@ -15,3 +15,5 @@
 (define scribblings '(("scribblings/barrel.scrbl" (multi-page))))
 
 (define racket-launcher-names '("barrel" "brl"))
+
+(define racket-launcher-libraries '("barrel.rkt" "barrel.rkt"))

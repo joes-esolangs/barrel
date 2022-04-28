@@ -107,8 +107,8 @@
 (define (brl-map stack)
   (define f (first stack))
   (define ls (second stack))
-  (define temp-stack (apply-word (lfy (quotation-words ls)) empty))
-  (define applied (map (curry push) (flatten (map (lambda (a) (apply-word (lfy (quotation-words f)) (list a))) temp-stack))))
+  (define temp-stack (map (lambda (f) (f (rest stack))) (quotation-words ls)))
+  (define applied (map (lambda (l) ((curry push) l)) (flatten (map (lambda (a) (apply-word (lfy (quotation-words f)) a)) temp-stack))))
   (cons (make-quotation applied) (drop stack 2)))
 (provide (rename-out [brl-map map]))
 

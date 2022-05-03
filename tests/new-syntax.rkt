@@ -1,2 +1,2 @@
-` this should print 49 
-{::**},!a.
+#!barrel
+{::**},!a

@@ -26,11 +26,11 @@
 
 ;; IO
 
-(define (print-quote ln? quote)
-  (define trim-and-apply (trim-ends "(" (~a (apply-word (lfy (quotation-words quote)) empty)) ")"))
+(define (print-quote ln? in-quote)
+  (define stringed (string-append "[" (string-join (map (lambda (f) (if (equal? (object-name f) 'curried:push) (~a (list-ref (f empty) 0)) (func-to-str f))) (quotation-words in-quote)) " ") "]"))
   (if ln?
-      (displayln (string-append "[" trim-and-apply "]"))
-      (display (string-append "[" trim-and-apply "]"))))
+      (displayln stringed)
+      (display stringed)))
 
 (define (print stack)
   (if (quotation? (first stack))

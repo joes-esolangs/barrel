@@ -1,0 +1,12 @@
+FEATURES:
+- If statements, for loops, and list operations
+- Fried notation for quotations 
+- Zero-width characters for IO?
+- Write some example syntax
+- primrec, binrec, genrec, treerec, linrec
+- Copy CJam functions http://foldr.moe/cjam.pdf
+- Using one ending character to end strings and blocks when chaining two or more: [1 0]+]=[1 0][+]
+- MATRICES
+
+BUGS:
+- fix weird map function output: [1 2 3 4 5][1+]↦· => [#<quotation> 6 #<quotation> 5 #<quotation> 4 #<quotation> 3 #<quotation> 2]

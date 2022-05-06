@@ -9,4 +9,3 @@
   (datum->syntax #f module-datum))
 (provide (contract-out
           [read-syntax (any/c input-port? . -> . syntax?)]))
-

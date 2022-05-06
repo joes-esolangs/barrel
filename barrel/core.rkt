@@ -3,6 +3,12 @@
 
 ;; TODO: ERROR HANDLING IN FUNCTIONS
 
+;; Evaluation
+
+(define (print-stack-nice stack)
+  (for-each (lambda (a) (if (quotation? a) (print-quote #t a) (displayln a))) (filter (or (negate void?) (negate procedure?)) stack)))
+(provide print-stack-nice)
+
 ;; quotation definition
 
 (define-struct quotation (words))
@@ -15,7 +21,7 @@
 (provide apply-stack)
 
 (define (apply-word words stack)
-  (apply-stack stack (words)))
+  (apply-stack stack (quotation-words words)))
 (provide apply-word)
 
 (define (bin-op op stack)
@@ -107,8 +113,8 @@
 (define (brl-map stack)
   (define f (first stack))
   (define ls (second stack))
-  (define temp-stack (map (lambda (f) (f (rest stack))) (quotation-words ls)))
-  (define applied (map (lambda (l) ((curry push) l)) (flatten (map (lambda (a) (apply-word (lfy (quotation-words f)) a)) temp-stack))))
+  (define temp-stack (map (lambda (f) (f '())) (quotation-words ls)))
+  (define applied (map (lambda (l) ((curry push) l)) (flatten (map (lambda (a) (apply-word f a)) temp-stack))))
   (cons (make-quotation applied) (drop stack 2)))
 (provide (rename-out [brl-map map]))
 
@@ -124,7 +130,6 @@
 
 
 ;; TODO: ORGANIZE BELOW
-
 
 
 ;; instead of append two quotations, maybe sum one of them

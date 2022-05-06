@@ -7,6 +7,10 @@ FEATURES:
 - Copy CJam functions http://foldr.moe/cjam.pdf
 - Using one ending character to end strings and blocks when chaining two or more: [1 0]+]=[1 0][+]
 - MATRICES
+- DICTIONARIES
+
+FUTURE:
+- Store definitions as quotes, so when you call them, use eval to evaluate the quotes. NO MORE LAMBDAFYING
 
 BUGS:
-- fix weird map function output: [1 2 3 4 5][1+]↦· => [#<quotation> 6 #<quotation> 5 #<quotation> 4 #<quotation> 3 #<quotation> 2]
+- fix print-stack-nice to print on newlines and use print-quote for quotes

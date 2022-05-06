@@ -14,7 +14,6 @@
 (provide (rename-out [barrel-module-begin #%module-begin]))
 (provide #%top-interaction)
 
-;; TODO: add implicit printing
 (define-macro (words WORDS ...)
   #'(block
       (define stack empty)
@@ -28,7 +27,7 @@
       (define code (list WORDS ...))
       (if (> (unbox count) 52)
           (raise "reached max definition limit")
-          (set-box! definitions (append (unbox definitions) (list code))))
+          (set-box! definitions (append (unbox definitions) (list (make-quotation code)))))
       (set-box! count (+ (unbox count) 1))))
 (provide word)
 
@@ -67,9 +66,10 @@
   [(id "λ") #'(begin
                 (displayln "revenge of the lambda")
                 (error 'lambda))]
-  [(id ID) #'((curry apply-word) (lambda ()
-                                   (define decoded (b52-decode ID))
-                                   (if (or (<= decoded (length (unbox definitions))) (not (< decoded 0)))
-                                       (list-ref (unbox definitions) (- decoded 1))
-                                       (raise (format "word \"~a\" not availible" ID)))))])
+  [(id ID) #'((curry apply-word) 
+              (block
+               (define decoded (b52-decode ID))
+               (if (or (<= decoded (length (unbox definitions))) (not (< decoded 0)))
+                   (list-ref (unbox definitions) (- decoded 1))
+                   (raise (format "word \"~a\" not availible" ID)))))])
 (provide id)

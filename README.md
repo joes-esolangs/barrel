@@ -1,7 +1,5 @@
 <img src="barrel_logo.png" width=150px height=150px>
 
-# README IS OUTDATED
-
 # barrel
 
 a stack language heavily inspired by Joy, K and CJam.

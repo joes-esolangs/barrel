@@ -2,13 +2,18 @@
 
 # barrel
 
-a stack language heavily inspired by Joy, K and CJam.
+an esoteric golfing stack language heavily inspired by Joy, K and CJam.
 
 # examples
 
-quine:
+hello world:
 ```racket
 "hello world"
+```
+
+quine:
+```
+1
 ```
 
 # install

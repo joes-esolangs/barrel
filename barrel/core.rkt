@@ -14,7 +14,7 @@
 (define-struct quotation (words))
 (provide make-quotation quotation? quotation-words)
 
-;; function for applying words and functions
+;; helper function for applying words and functions
 
 (define (apply-stack stack words)
    (foldl (lambda (f prev) (f prev)) stack words))
@@ -26,14 +26,27 @@
 
 (define (bin-op op stack)
   (cons (op (second stack) (first stack)) (drop stack 2)))
+(provide bin-op)
 
 (define (f-at-top f stack)
   (cons (f (first stack)) (rest stack)))
 
+(define-unhygienic-macro (mk-temp-stack F Q)
+  #'(define temp-stack (map (lambda (F) (F '())) (quotation-words Q))))
+
 ;; IO
 
+;; fix bug with printing math operators. work with macros in util.rkt
 (define (print-quote ln? in-quote)
-  (define stringed (string-append "[" (string-join (map (lambda (f) (if (equal? (object-name f) 'curried:push) (~a (list-ref (f empty) 0)) (func-to-str f))) (quotation-words in-quote)) " ") "]"))
+  (define stringed (string-append "[" (string-join
+                                       (map (lambda (f)
+                                              (if (equal? (object-name f) 'curried:push)
+                                                  (~a (list-ref (f empty) 0))
+                                                  (with-handlers ([exn:fail?
+                                                                   (λ (e) (curried-func-to-str f))])
+                                                    (func-to-str f))))
+                                            (quotation-words in-quote)) " ")
+                                  "]"))
   (if ln?
       (displayln stringed)
       (display stringed)))
@@ -95,6 +108,10 @@
   (cons y (cons z (cons x (drop stack 3)))))
 (provide rotate)
 
+(define (clear stack)
+  empty)
+(provide clear)
+
 ;; Combinators
 
 (define (eval stack)
@@ -109,24 +126,15 @@
 
 ;; Lists
 
-;; TODO: Make function to generalize making a temp stack and stuff
 (define (brl-map stack)
   (define f (first stack))
   (define ls (second stack))
-  (define temp-stack (map (lambda (f) (f '())) (quotation-words ls)))
+  (mk-temp-stack f ls)
   (define applied (map (lambda (l) ((curry push) l)) (flatten (map (lambda (a) (apply-word f a)) temp-stack))))
   (cons (make-quotation applied) (drop stack 2)))
 (provide (rename-out [brl-map map]))
 
 ;; Math
-
-(define (math-op op stack)
-  (match op
-    [(== +) (bin-op op stack)]
-    [(== *) (bin-op op stack)]
-    [(== -) (bin-op op stack)]
-    [(== /) (bin-op op stack)]))
-(provide math-op)
 
 
 ;; TODO: ORGANIZE BELOW

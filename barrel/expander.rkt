@@ -46,6 +46,9 @@
   [(id "~") #'swap]
   [(id "@") #'copy]
   [(id "#") #'rotate]
+  [(id "_") #'clear]
+  ;; Comparison
+  
   ;; Combinators
   [(id "η") #'eval]
   [(id "χ") #'cat]
@@ -57,9 +60,10 @@
   [(id ",") #'read]
   ;; Math
   [(id "+") #'plus]
-  [(id "*") #'((curry math-op) *)]
-  [(id "-") #'((curry math-op) -)]
-  [(id "/") #'((curry math-op) /)]
+  [(id "*") #'((curry bin-op) *)]
+  [(id "-") #'((curry bin-op) -)]
+  [(id "/") #'((curry bin-op) /)]
+  [(id "^") #'((curry bin-op) expt)]
   ;; List 
   [(id "↦") #'map]
   ;; MISC

@@ -32,10 +32,16 @@
       ['read ","]
       ;; Math
       ['plus "+"]
-      ['((curry math-op) *) "*"]
-      ['((curry math-op) -) "-"]
-      ['((curry math-op) /) "/"]
       ;; List 
       ['map "↦"]
-      [else (error 'unkown-id)]))
+      [else (error 'unknown-id)]))
 (provide func-to-str)
+
+(define-macro (curried-func-to-str F)
+  #'(match 'F
+      ['((curry bin-op) *) "*"]
+      ['((curry bin-op) -) "-"]
+      ['((curry bin-op) /) "/"]
+      ['((curry bin-op) expt) "^"]
+      ['(curry bin-op) "test"]))
+(provide curried-func-to-str)

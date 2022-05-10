@@ -16,4 +16,4 @@ FUTURE:
 - conversion operators
 
 BUGS:
-- fix print-quote with printing curried bin-op
+- fix print-quote with printing curried bin-op 

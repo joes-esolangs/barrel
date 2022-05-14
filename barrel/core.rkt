@@ -39,7 +39,6 @@
 
 ;; IO
 
-;; fix bug with printing math operators. work with macros in util.rkt
 (define (print-quote ln? in-quote)
   (define stringed (string-append "[" (string-join
                                        (map (lambda (f)

@@ -15,6 +15,7 @@ FUTURE:
 - exponent function
 - conversion operators
 - get rid of threading import in reader.rkt and tokenizer.rkt
+- comparison ops in func-to-str
 
 BUGS:
 - bug with test.brl "123 124≠"

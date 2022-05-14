@@ -28,6 +28,9 @@
   (cons (op (second stack) (first stack)) (drop stack 2)))
 (provide bin-op)
 
+(define (bool-bin-op op stack)
+  (cons (bool->number (op (second stack) (first stack))) (drop stack 2)))
+
 (define (f-at-top f stack)
   (cons (f (first stack)) (rest stack)))
 
@@ -42,9 +45,7 @@
                                        (map (lambda (f)
                                               (if (equal? (object-name f) 'curried:push)
                                                   (~a (list-ref (f empty) 0))
-                                                  (with-handlers ([exn:fail?
-                                                                   (λ (e) (curried-func-to-str f))])
-                                                    (func-to-str f))))
+                                                  (func-to-str f)))
                                             (quotation-words in-quote)) " ")
                                   "]"))
   (if ln?
@@ -124,6 +125,14 @@
   (cons (make-quotation (append (quotation-words q2) (quotation-words q1))) (drop stack 2)))
 (provide cat)
 
+(define (dip stack)
+  '())
+(provide dip)
+
+(define (if stack)
+  '())
+(provide if) 
+
 ;; Lists
 
 (define (brl-map stack)
@@ -136,10 +145,6 @@
 
 ;; Math
 
-
-;; TODO: ORGANIZE BELOW
-
-
 ;; instead of append two quotations, maybe sum one of them
 (define (plus stack)
   (define a (first stack))
@@ -150,3 +155,57 @@
     [(and (string? a) (string? b)) (cons (string-append b a) rest)]
     [else (displayln "error: type mismatch") (error 'type-mismatch)]))
 (provide plus)
+
+(define (mult stack)
+  (bin-op * stack))
+(provide mult)
+
+(define (sub stack)
+  (bin-op - stack))
+(provide sub)
+
+(define (div stack)
+  (bin-op / stack))
+(provide div)
+
+(define (exp stack)
+  (bin-op expt stack))
+(provide exp)
+
+(define (rem stack)
+  (bin-op remainder stack))
+(provide rem)
+
+(define (gcd stack)
+  (bin-op gcd stack))
+(provide gcd)
+
+(define (lcm stack)
+  (bin-op lcm stack))
+(provide lcm)
+
+;; Comparison
+
+(define (lt stack)
+  (bool-bin-op < stack))
+(provide lt)
+
+(define (gt stack)
+  (bool-bin-op > stack))
+(provide gt)
+
+(define (leq stack)
+  (bool-bin-op <= stack))
+(provide leq)
+
+(define (geq stack)
+  (bool-bin-op >= stack))
+(provide geq)
+
+(define (eq stack)
+  (bool-bin-op equal? stack))
+(provide eq)
+
+(define (neq stack)
+  (bool-bin-op (negate equal?) stack))
+(provide neq)

@@ -39,41 +39,51 @@
   #'((curry push) CONST))
 (provide const)
 
-(define-macro-cases id
-  ;; Stack 
-  [(id "$") #'pop]
-  [(id ":") #'dup]
-  [(id "~") #'swap]
-  [(id "@") #'copy]
-  [(id "#") #'rotate]
-  [(id "_") #'clear]
-  ;; Comparison
-  
-  ;; Combinators
-  [(id "η") #'eval]
-  [(id "χ") #'cat]
-  [(id "Δ") #'dip]
-  ;; IO
-  [(id ".") #'print]
-  [(id "·") #'println]
-  [(id "§") #'print-stack]
-  [(id ",") #'read]
-  ;; Math
-  [(id "+") #'plus]
-  [(id "*") #'((curry bin-op) *)]
-  [(id "-") #'((curry bin-op) -)]
-  [(id "/") #'((curry bin-op) /)]
-  [(id "^") #'((curry bin-op) expt)]
-  ;; List 
-  [(id "↦") #'map]
-  ;; MISC
-  [(id "λ") #'(begin
-                (displayln "revenge of the lambda")
-                (error 'lambda))]
-  [(id ID) #'((curry apply-word) 
-              (block
-               (define decoded (b52-decode ID))
-               (if (or (<= decoded (length (unbox definitions))) (not (< decoded 0)))
-                   (list-ref (unbox definitions) (- decoded 1))
-                   (raise (format "word \"~a\" not availible" ID)))))])
+(define-macro (id ID)
+  #'(match ID
+      ;; Stack 
+      ["$" pop]
+      [":" dup]
+      ["~" swap]
+      ["@" copy]
+      ["#" rotate]
+      ["_" clear]
+      ;; Comparison
+      ["<" lt]
+      [">" gt]
+      ["≤" leq]
+      ["≥" geq]
+      ["=" eq]
+      ["≠" neq]
+      ;; Combinators
+      ["η" eval]
+      ["χ" cat]
+      ["Δ" dip]
+      ["?" if]
+      ;; IO
+      ["." print]
+      ["·" println]
+      ["§" print-stack]
+      ["," read]
+      ;; Math
+      ["+" plus]
+      ["*" mult]
+      ["-" sub]
+      ["/" div]
+      ["^" exp]
+      ["%" rem]
+      ["`" gcd]
+      ["&" lcm]
+      ;; List 
+      ["↦" map]
+      ;; MISC
+      ["λ" (begin
+                    (displayln "revenge of the lambda")
+                    (error 'lambda))]
+      [ID ((curry apply-word) 
+                  (block
+                   (define decoded (b52-decode ID))
+                   (if (or (<= decoded (length (unbox definitions))) (not (< decoded 0)))
+                       (list-ref (unbox definitions) (- decoded 1))
+                       (raise (format "word \"~a\" not availible" ID)))))]))
 (provide id)

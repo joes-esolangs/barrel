@@ -16,4 +16,5 @@
 
 (define racket-launcher-names '("barrel" "brl"))
 
-(define racket-launcher-libraries '("barrel.rkt" "barrel.rkt"))
+(define racket-launcher-libraries '("barrel.rkt" "barrel.rkt"))(define build-deps '("racket-doc"
+                     "scribble-lib"))

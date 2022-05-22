@@ -1,89 +1,100 @@
 #lang br/quicklang
-(require racket/dict racket/block)
-(require "core.rkt" "util.rkt")
+(require racket/dict
+         racket/block)
+(require "core.rkt"
+         "util.rkt")
 (provide (all-from-out "core.rkt"))
+
+(define get-stack (box empty))
 
 (provide definitions)
 (define definitions (box empty))
 
 (define count (box 0))
 
-(define-macro (barrel-module-begin PARSE-TREE) 
-  #'(#%module-begin
-     PARSE-TREE))
+(define-macro (barrel-module-begin PARSE-TREE) #'(#%module-begin PARSE-TREE))
 (provide (rename-out [barrel-module-begin #%module-begin]))
 (provide #%top-interaction)
 
 (define-macro (words WORDS ...)
-  #'(block
-      (define stack empty)
-      (filter void? (list WORDS ...))
-      (define code (filter (negate void?) (list WORDS ...)))
-      (void (print-stack-nice (apply-stack stack code)))))
+  #'(block (define stack empty)
+           (define words (list WORDS ...))
+           (println words) ; debug
+           (set-box! get-stack words)
+           (filter void? words)
+           (define code (filter (negate void?) words))
+           (void (print-stack-nice (apply-stack stack code)))))
 (provide words)
 
 (define-macro (word "{" WORDS ... "}")
-  #'(block
-      (define code (list WORDS ...))
-      (if (> (unbox count) 52)
-          (raise "reached max definition limit")
-          (set-box! definitions (append (unbox definitions) (list (make-quotation code)))))
-      (set-box! count (+ (unbox count) 1))))
+  #'(block (define code (list WORDS ...))
+           (if (> (unbox count) 52)
+               (raise "reached max definition limit")
+               (set-box! definitions
+                         (append (unbox definitions)
+                                 (list (make-quotation code)))))
+           (set-box! count (+ (unbox count) 1))))
 (provide word)
 
 (define-macro (quote~ "[" WORDS ... "]")
-  #'((curry push) (make-quotation (list WORDS ...))))
+  #'(block
+      (println (unbox get-stack)) ; debug
+      (define words (list WORDS ...))
+      ((curry push) (if (member "_" words) (make-quotation (fried-quote ls get-stack)) (make-quotation (list WORDS ...))))))
 (provide quote~)
 
-(define-macro (const CONST)
-  #'((curry push) CONST))
+(define-macro (fried-quote WORDS STACK)
+  #'(1))
+
+(define-macro (const CONST) #'((curry push) CONST))
 (provide const)
 
 (define-macro (id ID)
-  #'(match ID
-      ;; Stack 
-      ["$" pop]
-      [":" dup]
-      ["~" swap]
-      ["@" copy]
-      ["#" rotate]
-      ["_" clear]
-      ;; Comparison
-      ["<" lt]
-      [">" gt]
-      ["≤" leq]
-      ["≥" geq]
-      ["=" eq]
-      ["≠" neq]
-      ;; Combinators
-      ["η" eval]
-      ["χ" cat]
-      ["Δ" dip]
-      ["?" if]
-      ;; IO
-      ["." print]
-      ["·" println]
-      ["§" print-stack]
-      ["," read]
-      ;; Math
-      ["+" plus]
-      ["*" mult]
-      ["-" sub]
-      ["/" div]
-      ["^" exp]
-      ["%" rem]
-      ["`" gcd]
-      ["&" lcm]
-      ;; List 
-      ["↦" map]
-      ;; MISC
-      ["λ" (begin
-                    (displayln "revenge of the lambda")
-                    (error 'lambda))]
-      [ID ((curry apply-word) 
-                  (block
-                   (define decoded (b52-decode ID))
-                   (if (or (<= decoded (length (unbox definitions))) (not (< decoded 0)))
-                       (list-ref (unbox definitions) (- decoded 1))
-                       (raise (format "word \"~a\" not availible" ID)))))]))
+              #'(match ID
+                  ;; Stack
+                  ["$" pop]
+                  [":" dup]
+                  ["~" swap]
+                  ["@" copy]
+                  ["#" rotate]
+                  ["!" clear]
+                  ["&" move]
+                  ;; Comparison
+                  ["<" lt]
+                  [">" gt]
+                  ["≤" leq]
+                  ["≥" geq]
+                  ["=" eq]
+                  ["≠" neq]
+                  ;; Combinators
+                  ["η" eval]
+                  ["χ" cat]
+                  ["Δ" dip]
+                  ["?" brl-if]
+                  ;; IO
+                  ["." brl-print]
+                  ["·" brl-println]
+                  ["§" print-stack]
+                  ["," read]
+                  ;; Math
+                  ["+" plus]
+                  ["*" mult]
+                  ["-" sub]
+                  ["/" div]
+                  ["^" exp]
+                  ["%" rem]
+                  ["`" gcd]
+                  ["&" lcm]
+                  ;; List
+                  ["↦" brl-map]
+                  ;; MISC
+                  ["λ" inf]
+                  [ID
+                   ((curry apply-word)
+                    (block (define decoded (b52-decode ID))
+                           (if (or (<= decoded (length (unbox definitions)))
+                                   (not (< decoded 0)))
+                               (list-ref (unbox definitions) (- decoded 1))
+                               (raise (format "word \"~a\" not availible"
+                                              ID)))))]))
 (provide id)

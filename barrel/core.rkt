@@ -1,6 +1,9 @@
 #lang br/quicklang
 (require brag/support "util.rkt")
 
+;; UNCOMMENT LATER
+#;(provide (all-defined-out))
+
 ;; TODO: ERROR HANDLING IN FUNCTIONS
 
 ;; Evaluation
@@ -40,30 +43,33 @@
 ;; IO
 
 (define (print-quote ln? in-quote)
-  (define stringed (string-append "[" (string-join
-                                       (map (lambda (f)
-                                              (if (equal? (object-name f) 'curried:push)
-                                                  (~a (list-ref (f empty) 0))
-                                                  (func-to-str f)))
-                                            (quotation-words in-quote)) " ")
-                                  "]"))
-  (if ln?
-      (displayln stringed)
-      (display stringed)))
+  (define stringed
+    (string-append
+     "["
+     (string-join (map (lambda (f)
+                         (cond
+                           [(equal? (object-name f) 'curried:push)
+                            (~a (list-ref (f empty) 0))]
+                           [(equal? f "_") f]
+                           [else (func-to-str f)]))
+                       (quotation-words in-quote))
+                  " ")
+     "]"))
+  (if ln? (displayln stringed) (display stringed)))
 
-(define (print stack)
+(define (brl-print stack)
   (if (quotation? (first stack))
       (print-quote #f (first stack))
       (display (first stack)))
   (rest stack))
-(provide print)
+(provide brl-print)
 
-(define (println stack)
+(define (brl-println stack)
   (if (quotation? (first stack))
       (print-quote #t (first stack))
       (displayln (first stack)))
   (rest stack))
-(provide println)
+(provide brl-println)
 
 (define (read stack)
   (define input (read-line))
@@ -71,9 +77,8 @@
 (provide read)
 
 (define (print-stack stack)
-  (displayln (string-append
-              (format "{~a} " (length stack))
-              (trim-ends "(" (~a (reverse stack)) ")")))
+  (displayln (string-append (format "{~a} " (length stack))
+                            (trim-ends "(" (~a (reverse stack)) ")")))
   stack)
 (provide print-stack)
 
@@ -112,6 +117,10 @@
   empty)
 (provide clear)
 
+(define (move stack)
+  empty)
+(provide move)
+
 ;; Combinators
 
 (define (eval stack)
@@ -121,16 +130,17 @@
 (define (cat stack)
   (define q1 (first stack))
   (define q2 (second stack))
-  (cons (make-quotation (append (quotation-words q2) (quotation-words q1))) (drop stack 2)))
+  (cons (make-quotation (append (quotation-words q2) (quotation-words q1)))
+        (drop stack 2)))
 (provide cat)
 
 (define (dip stack)
   '())
 (provide dip)
 
-(define (if stack)
+(define (brl-if stack)
   '())
-(provide if) 
+(provide brl-if)
 
 ;; Lists
 
@@ -138,9 +148,11 @@
   (define f (first stack))
   (define ls (second stack))
   (mk-temp-stack f ls)
-  (define applied (map (lambda (l) ((curry push) l)) (flatten (map (lambda (a) (apply-word f a)) temp-stack))))
+  (define applied
+    (map (lambda (l) ((curry push) l))
+         (flatten (map (lambda (a) (apply-word f a)) temp-stack))))
   (cons (make-quotation applied) (drop stack 2)))
-(provide (rename-out [brl-map map]))
+(provide brl-map)
 
 ;; Math
 
@@ -152,7 +164,9 @@
   (cond
     [(and (number? a) (number? b)) (cons (+ b a) rest)]
     [(and (string? a) (string? b)) (cons (string-append b a) rest)]
-    [else (displayln "error: type mismatch") (error 'type-mismatch)]))
+    [else
+     (displayln "error: type mismatch")
+     (error 'type-mismatch)]))
 (provide plus)
 
 (define (mult stack)
@@ -208,3 +222,7 @@
 (define (neq stack)
   (bool-bin-op (negate equal?) stack))
 (provide neq)
+
+;; Misc
+(define (inf stack) (inf stack))
+(provide inf)

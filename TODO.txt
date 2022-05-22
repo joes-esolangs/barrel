@@ -1,14 +1,16 @@
 FEATURES:
-- conditional operators
-- If statements, for loops, and list operations
+- If statements, for loops
+- list operations
 - Fried notation for quotations 
 - Write some example syntax
 - primrec, binrec, genrec, treerec, linrec, monoidal versions and a bunch of joy combinators
 - Copy CJam functions http://foldr.moe/cjam.pdf, and Joy functions https://hypercubed.github.io/joy/html/html-manual.html
 - Using one ending character to end strings and blocks when chaining two or more: [1 0]+]=[1 0][+]
 - Local bindings which pop values off the stack and assign them to names and a generalized peek, which doesnt pop.
+- Custom Encoding for unicode
 - MATRICES
 - DICTIONARIES
+- BETTER ERROR MESSAGES
 
 FUTURE:
 - function that takes in a number and puts the top n elements in a quotation
@@ -16,6 +18,11 @@ FUTURE:
 - conversion operators
 - get rid of threading import in reader.rkt and tokenizer.rkt
 - comparison ops in func-to-str
+- two types of if statements, one where has else case, one without, which does nothing if it isnt satisfied.
+- Use 「 」 for quote or function brackets
 
 BUGS:
 - bug with test.brl "123 124≠"
+
+CODE STYLE:
+- Format all the code

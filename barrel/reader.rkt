@@ -1,6 +1,6 @@
 #lang br/quicklang
 (require "parser.rkt" "tokenizer.rkt")
-(require threading racket/contract)
+(require racket/contract)
 
 (define (read-syntax path port)
   (define parse-tree (parse path (make-tokenizer port)))

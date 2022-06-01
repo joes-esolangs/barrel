@@ -1,0 +1,4 @@
+2 1- 2≠["will print"·]?
+5 3- 3=["wont print".]?
+0 1≠["this is true"·]["this is false"·]?
+3 5<["5 is greater than 3"·]["5 is less than or equal to 3"·]?

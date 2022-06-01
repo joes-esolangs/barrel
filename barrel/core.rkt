@@ -118,7 +118,8 @@
 (provide clear)
 
 (define (move stack)
-  empty)
+  (define i (first stack))
+  (cons (list-ref stack (add1 i)) (append (take (rest stack) i) (drop (rest stack) (add1 i)))))
 (provide move)
 
 ;; Combinators
@@ -135,11 +136,19 @@
 (provide cat)
 
 (define (dip stack)
-  '())
+  (define new-stack (cons (second stack) (cons (first stack) (drop stack 2))))
+  (eval new-stack))
 (provide dip)
 
+;; FIX ITITT
 (define (brl-if stack)
-  '())
+  (if (quotation? (second stack))
+      (if (not (= (third stack) 0))
+          (eval (take (remove+ (- (length stack) 3) stack) (- (length stack) 2)))
+          (eval (remove+ (- (length stack) 3) (remove+ (- (length stack) 3) stack))))
+      (if (not (= (second stack) 0))
+          (eval (remove+ (- (length stack) 1) stack))
+          stack)))
 (provide brl-if)
 
 ;; Lists
@@ -156,7 +165,6 @@
 
 ;; Math
 
-;; instead of append two quotations, maybe sum one of them
 (define (plus stack)
   (define a (first stack))
   (define b (second stack))

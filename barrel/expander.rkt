@@ -5,8 +5,6 @@
          "util.rkt")
 (provide (all-from-out "core.rkt"))
 
-(define get-stack (box empty))
-
 (provide definitions)
 (define definitions (box empty))
 
@@ -19,8 +17,6 @@
 (define-macro (words WORDS ...)
   #'(block (define stack empty)
            (define words (list WORDS ...))
-           (println words) ; debug
-           (set-box! get-stack words)
            (filter void? words)
            (define code (filter (negate void?) words))
            (void (print-stack-nice (apply-stack stack code)))))
@@ -38,9 +34,9 @@
 
 (define-macro (quote~ "[" WORDS ... "]")
   #'(block
-      (println (unbox get-stack)) ; debug
+      ;; TODO: Get the STACKK
       (define words (list WORDS ...))
-      ((curry push) (if (member "_" words) (make-quotation (fried-quote ls get-stack)) (make-quotation (list WORDS ...))))))
+      ((curry push) (if (member "_" words) (make-quotation (fried-quote words STACKK)) (make-quotation (list WORDS ...))))))
 (provide quote~)
 
 (define-macro (fried-quote WORDS STACK)
@@ -92,9 +88,8 @@
                   [ID
                    ((curry apply-word)
                     (block (define decoded (b52-decode ID))
-                           (if (or (<= decoded (length (unbox definitions)))
-                                   (not (< decoded 0)))
-                               (list-ref (unbox definitions) (- decoded 1))
-                               (raise (format "word \"~a\" not availible"
-                                              ID)))))]))
+                           (with-handlers ([exn:fail?
+                                            (λ (e) (raise (format "word \"~a\" not availible"
+                                              ID)))])
+                               (list-ref (unbox definitions) (- decoded 1)))))]))
 (provide id)

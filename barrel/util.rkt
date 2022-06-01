@@ -14,17 +14,19 @@
 
 (define-macro (func-to-str F)
   #'(match (object-name F)
-      ['add "+"]
       ;; Stack 
       ['pop "$"]
       ['dup ":"]
       ['swap "~"]
       ['copy "@"]
       ['rotate "#"]
+      [clear "!"]
+      [move "&"]
       ;; Combinators
       ['eval "η"]
-      ['cat "χ"]
-      ['dip "δ"]
+      ['cat "χ"]`
+      ['dip "Δ"]
+      ['brl-if "?"]
       ;; IO
       ['print "."]
       ['println "·"]
@@ -40,9 +42,22 @@
       ['lcm "&"]
       ;; List 
       ['map "↦"]
+      ;; Comparison
+      [lt "<"]
+      [gt ">"]
+      [leq "≤"]
+      [geq "≥"]
+      [eq "="]
+      [neq "≠"]
+      
       [else (error 'unknown-id)]))
 (provide func-to-str)
 
 (define (bool->number b)
   (if b 1 0))
 (provide bool->number)
+
+(define (remove+ lst n)
+  (let-values (((front back) (split-at lst n)))
+    (append front (cdr back))))
+(provide remove+)

@@ -1,6 +1,9 @@
 #lang br/quicklang
 (require brag/support "util.rkt")
 
+(define ls (list 1 2 3 4 5)
+    )
+
 ;; UNCOMMENT LATER
 #;(provide (all-defined-out))
 
@@ -23,9 +26,13 @@
    (foldl (lambda (f prev) (f prev)) stack words))
 (provide apply-stack)
 
-(define (apply-word words stack)
+(define (apply-word stack words)
   (apply-stack stack (quotation-words words)))
 (provide apply-word)
+
+(define (apply-def code stack)
+  (apply-stack stack (code)))
+(provide apply-def)
 
 (define (bin-op op stack)
   (cons (op (second stack) (first stack)) (drop stack 2)))
@@ -125,7 +132,7 @@
 ;; Combinators
 
 (define (eval stack)
-  (apply-stack (rest stack) (quotation-words (first stack))))
+  (apply-stack (rest stack) (first stack)))
 (provide eval)
 
 (define (cat stack)
@@ -140,11 +147,11 @@
   (eval new-stack))
 (provide dip)
 
-;; FIX ITITT
+;; FIX ITITT THIS SO MUCH ITS SOO ANNOYING AFKDJHEKJFAHEFKAJHFEKJ
 (define (brl-if stack)
   (if (quotation? (second stack))
       (if (not (= (third stack) 0))
-          (eval (take (remove+ (- (length stack) 3) stack) (- (length stack) 2)))
+          (eval (remove+ (sub1 (length stack)) (remove+ (- (length stack) 3) stack))) ;; THIS LINE, I JUST WANT IT TO DO '(1 2 3 4 5) -> '(1 2 4)
           (eval (remove+ (- (length stack) 3) (remove+ (- (length stack) 3) stack))))
       (if (not (= (second stack) 0))
           (eval (remove+ (- (length stack) 1) stack))
@@ -159,7 +166,7 @@
   (mk-temp-stack f ls)
   (define applied
     (map (lambda (l) ((curry push) l))
-         (flatten (map (lambda (a) (apply-word f a)) temp-stack))))
+         (flatten (map (lambda (a) (apply-word a f)) temp-stack))))
   (cons (make-quotation applied) (drop stack 2)))
 (provide brl-map)
 

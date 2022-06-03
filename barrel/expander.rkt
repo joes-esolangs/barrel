@@ -28,7 +28,7 @@
                (raise "reached max definition limit")
                (set-box! definitions
                          (append (unbox definitions)
-                                 (list (make-quotation code)))))
+                                 (list code))))
            (set-box! count (+ (unbox count) 1))))
 (provide word)
 
@@ -86,10 +86,10 @@
                   ;; MISC
                   ["λ" inf]
                   [ID
-                   ((curry apply-word)
-                    (block (define decoded (b52-decode ID))
+                   ((curry apply-def)
+                    (lambda () (block (define decoded (b52-decode ID))
                            (with-handlers ([exn:fail?
-                                            (λ (e) (raise (format "word \"~a\" not availible"
+                                            (λ (e) (raise (format "word not availible: ~a"
                                               ID)))])
-                               (list-ref (unbox definitions) (- decoded 1)))))]))
+                               (list-ref (unbox definitions) (- decoded 1))))))]))
 (provide id)

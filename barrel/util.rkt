@@ -57,7 +57,7 @@
   (if b 1 0))
 (provide bool->number)
 
-(define (remove+ lst n)
+(define (remove+ n lst)
   (let-values (((front back) (split-at lst n)))
-    (append front (cdr back))))
+    (append (take front (sub1 (length lst))) back)))
 (provide remove+)

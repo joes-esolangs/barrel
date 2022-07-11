@@ -1,3 +1,5 @@
+# BARREL IS DISCONTINUED FOR NOW
+
 <img src="barrel_logo.png" width=150px height=150px>
 
 # barrel

@@ -1,7 +1,5 @@
 # BARREL IS DISCONTINUED FOR NOW
 
-<img src="barrel_logo.png" width=150px height=150px>
-
 # barrel
 
 an esoteric golfing stack language heavily inspired by Joy, K and CJam.
